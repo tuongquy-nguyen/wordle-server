@@ -1,11 +1,21 @@
-const jsonServer = require("json-server");
-const server = jsonServer.create();
-const router = jsonServer.router("db.json");
-const middlewares = jsonServer.defaults();
+const express = require("express");
+const cors = require("cors");
 
-server.use(middlewares);
-server.use(router);
+const app = express();
+app.use(cors()); // Enable CORS for all routes
 
-server.listen(3001, () => {
-  console.log("JSON Server is running");
+const data = require("./db.json");
+
+app.get("/solutions", (req, res) => {
+  res.json(data.solutions);
+});
+
+app.get("/letters", (req, res) => {
+  res.json(data.letters);
+});
+
+// Use the environment variable PORT or default to 3100
+const PORT = process.env.PORT || 3100;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
